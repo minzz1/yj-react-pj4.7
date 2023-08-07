@@ -200,7 +200,7 @@ export default function Page() {
                 .fill("")
                 .map((_, i) => (
                   <div key={i}>
-                    <img src={`https://www.daeguoperahouse.org/images/main/img_ban0${i + 1}_on.png`} alt="image familt sites" />
+                    <image src={`https://www.daeguoperahouse.org/images/main/img_ban0${i + 1}_on.png`} alt="image family sites" />
                   </div>
                 ))}
             </MultiCarousel>

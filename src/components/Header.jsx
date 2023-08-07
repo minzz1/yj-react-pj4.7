@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import LogoAsset from "./asset/LogoAsset";
 import SearchAsset from "./asset/SearchAsset";
-import SignUp from "../app/SignUp";
 
 const GNB = [
   { mainTitle: "공연안내", subTitle: "Performance", link: "/information" },
