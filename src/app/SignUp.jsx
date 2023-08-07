@@ -4,12 +4,19 @@ import Layout from "../components/Layout";
 import LayoutContents from "../components/LayoutContents";
 import { useForm } from "react-hook-form";
 import Model from "react-modal";
+import DaumPostcodeEmbed from "react-daum-postcode";
+import { useMutation } from "react-query";
+import { userRegister } from "../api";
 
 export default function SignUp() {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [zipcode, setZipcode] = useState("");
+  const [adressDetail, setAdressDetail] = useState("");
   const {
     register,
+    handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const openModal = () => {
@@ -32,11 +39,35 @@ export default function SignUp() {
     },
   };
 
+  const handleComplete = (data) => {
+    setIsOpen(false);
+    setZipcode(data.zonecode);
+    setAdressDetail(data.address);
+  };
+
+  const { mutate } = useMutation(userRegister, {
+    onSuccess: () => {
+      reset();
+    },
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+    mutate(data);
+  };
+
   return (
     <Layout>
-      <Model isOpen={modalIsOpen} style={customStyles} onRequestClose={closeModal}></Model>
+      <Model isOpen={modalIsOpen} style={customStyles} onRequestClose={closeModal}>
+        <DaumPostcodeEmbed onComplete={handleComplete} />
+        <div className="flex justify-center">
+          <button onClick={closeModal} className="border border-neutral-300 px-4 py-1 rounded-md hover:text-neutral-700 hover:border-neutral-700">
+            close
+          </button>
+        </div>
+      </Model>
       <LayoutContents>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <table className="table_top w-full">
             <tbody>
               <tr>
@@ -106,12 +137,12 @@ export default function SignUp() {
                 <td className="table_td border-l-0">주소</td>
                 <td className="table_td border-l-0">
                   <div className="space-x-1">
-                    <input {...register("zipcode")} disabled type="text" className="border border-neutral-300 p-2 bg-neutral-50" />
+                    <input {...register("zipcode")} value={zipcode} disabled type="text" className="border border-neutral-300 p-2 bg-neutral-50" />
                     <button onClick={openModal} type="button" className="px-4 py-2 rouned text-sm border border-neutral-300 hover:shadow-md">
                       우편번호 검색
                     </button>
                   </div>
-                  <input {...register("address1")} disabled type="text" className="w-full border border-neutral-300 p-2 bg-neutral-50" />
+                  <input {...register("address1")} value={adressDetail} disabled type="text" className="w-full border border-neutral-300 p-2 bg-neutral-50" />
                   <input {...register("address2")} type="text" className="w-full border border-neutral-300 p-2" />
                 </td>
               </tr>
