@@ -55,6 +55,7 @@ export async function userSignIn(props) {
     body: JSON.stringify(props),
   }).then((res) => res.json());
 }
+
 //유저의 데이터만 받아온다 get요청 !
 export async function loginSuccess() {
   return await fetch(`${BASE_PATH}/api/users/login/success`, {
@@ -63,5 +64,26 @@ export async function loginSuccess() {
       "Content-Type": "application/json",
     },
     credentials: "include",
+  }).then((res) => res.json());
+}
+
+export async function logout() {
+  return await fetch(`${BASE_PATH}/api/users/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  }).then((res) => res.json());
+}
+
+export async function kakaoLogin(code) {
+  return await fetch(`${BASE_PATH}/api/users/kakao`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ code }),
   }).then((res) => res.json());
 }

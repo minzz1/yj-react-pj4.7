@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import LogoAsset from "./asset/LogoAsset";
 import SearchAsset from "./asset/SearchAsset";
 import useUser from "../hooks/useUser";
+import { logout } from "../api";
 
 const GNB = [
   { mainTitle: "공연안내", subTitle: "Performance", link: "/information" },
@@ -13,7 +14,13 @@ const GNB = [
 ];
 
 export default function Header() {
-  const { userLoading, isLoggedIn, user } = useUser();
+  const { userLoading, isLoggedIn, user, refetch } = useUser();
+  const onLogout = async () => {
+    await logout();
+    alert("로그아웃");
+    refetch();
+  };
+
   console.log(userLoading, isLoggedIn, user);
   return (
     <div className="w-full flex justify-center h-header-height shadow-md ">
@@ -44,7 +51,10 @@ export default function Header() {
             {isLoggedIn === "true" ? (
               <>
                 <div>{user.name}</div>
-                <div>logout</div>
+                <div className="w-8 h-8 rounded-full bg-slate-900 overflow-hidden">
+                  <img src={user.avatar} alt="profile" />
+                </div>
+                <div onClick={onLogout}>logout</div>
               </>
             ) : (
               <>

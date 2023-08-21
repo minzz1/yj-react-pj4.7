@@ -2,7 +2,8 @@ import { useQuery } from "react-query";
 import { loginSuccess } from "../api";
 
 export default function useUser() {
-  const { isLoading, data, refetch } = useQuery("loginSussess", loginSuccess);
+  const { isLoading, data, refetch } = useQuery("loginSuccess", loginSuccess);
+
   return {
     userLoading: isLoading,
     isLoggedIn: data?.ok,
